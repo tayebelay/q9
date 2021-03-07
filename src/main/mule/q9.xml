@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="6000f2e5-a39f-499c-9913-8975c18d46cf" >
+		<http:listener-connection host="0.0.0.0" port="8082" />
+	</http:listener-config>
+	<flow name="q9Flow" doc:id="28125be0-a43a-4d2d-a903-a4ffbb476f08" >
+		<http:listener doc:name="HTTP: GET/" doc:id="c0691836-9326-4506-aed9-6537d4acb19d" config-ref="HTTP_Listener_config" path="/"/>
+		<set-payload value='#[[1,2,3,4]]' doc:name='[1,2,3,4]' doc:id="f6407e26-ecd8-4f3e-bf1d-9a3df63a7856" />
+		<set-variable value="10" doc:name="quantity = 10" doc:id="ae1912f5-a1a0-4144-b88e-15e9f8b503df" variableName="quantity "/>
+		<foreach doc:name="For Each" doc:id="0eace606-b9d1-4a9d-b2d3-1720398f4cdf" >
+			<set-payload value='#["order" ++ payload]' doc:name='"order"  ++ payload' doc:id="ddfd6e28-3a8f-4231-963b-907d70f0a9d5" />
+			<set-variable value="#[vars.quantity + 1]" doc:name="quantity + 1" doc:id="69ccd4e4-375d-48c9-87eb-1a1347754a4c" variableName="quantity "/>
+		</foreach>
+		<logger level="INFO" doc:name="payload" doc:id="c6e50b9e-4baf-4604-9fe6-9619bda77097" message="#[[payload,vars.quantity]]"/>
+	</flow>
+</mule>
